@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"math"
+	"math/rand/v2"
 	"sync"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -54,10 +56,16 @@ func updatePlayer(player Player) Player {
 
 func updateEnemies(state State) EnemyList {
 	newEnemies := EnemyList{}
+	spawnEnemy := rand.Float32() < float32(1)/1000
 	for i, e := range state.Enemies {
 		if e.Alive {
 			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 20)
 			newEnemies[i] = Enemy{true, newPos}
+		} else if spawnEnemy {
+			spawnEnemy = false
+
+			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1000, Y: 0}, rand.Float32()*math.Pi))
+			newEnemies[i] = Enemy{true, pos}
 		}
 	}
 	return newEnemies
@@ -79,5 +87,9 @@ func updateProjectiles(projectiles ProjectileList) ProjectileList {
 }
 
 func handleInteractions(state *State) {
-	// TODO: update collisions, hp, spawning projectiles/enemies
+	updateCollisions(state)
+}
+
+func updateCollisions(state *State) {
+	// TODO: do damage and stuff
 }
