@@ -12,7 +12,11 @@ func main() {
 
 	rl.SetTargetFPS(1000)
 
-	state := internal.State{}
+	state := internal.State{
+		Player: internal.Player{
+			Alive: true,
+		},
+	}
 	for !rl.WindowShouldClose() {
 		state = state.Update()
 		rl.BeginDrawing()

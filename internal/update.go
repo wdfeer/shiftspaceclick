@@ -9,6 +9,10 @@ import (
 )
 
 func (state State) Update() State {
+	if !state.Player.Alive {
+		return state
+	}
+
 	state = handleIndependent(state)
 	handleInteractions(&state)
 	return state
@@ -49,23 +53,25 @@ func updatePlayer(player Player) Player {
 		}
 	}
 	return Player{
+		true,
 		rl.Vector2Add(player.Position, player.Velocity),
 		newVelocity,
+		player.Size,
 	}
 }
 
 func updateEnemies(state State) EnemyList {
 	newEnemies := EnemyList{}
-	spawnEnemy := rand.Float32() < float32(1)/1000
+	canSpawnEnemy := rand.Float32() < float32(1)/1000
 	for i, e := range state.Enemies {
 		if e.Alive {
 			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 20)
-			newEnemies[i] = Enemy{true, newPos}
-		} else if spawnEnemy {
-			spawnEnemy = false
+			newEnemies[i] = Enemy{true, newPos, e.Size}
+		} else if canSpawnEnemy {
+			canSpawnEnemy = false
 
 			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1000, Y: 0}, rand.Float32()*math.Pi))
-			newEnemies[i] = Enemy{true, pos}
+			newEnemies[i] = Enemy{true, pos, e.Size}
 		}
 	}
 	return newEnemies
@@ -91,5 +97,23 @@ func handleInteractions(state *State) {
 }
 
 func updateCollisions(state *State) {
-	// TODO: do damage and stuff
+	for i, e := range state.Enemies {
+		if rl.Vector2Distance(state.Player.Position, e.Position) < e.Size+state.Player.Size {
+			state.Player.Alive = false
+		}
+
+		for j, p := range state.Projectiles {
+			if !p.Hostile && rl.Vector2Distance(e.Position, p.Position) < e.Size+p.Size {
+				state.Enemies[i].Alive = false
+				state.Projectiles[j].Alive = false
+			}
+		}
+	}
+
+	for j, p := range state.Projectiles {
+		if p.Hostile && rl.Vector2Distance(state.Player.Position, p.Position) < state.Player.Size+p.Size {
+			state.Player.Alive = false
+			state.Projectiles[j].Alive = false
+		}
+	}
 }
