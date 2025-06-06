@@ -30,3 +30,15 @@ type Projectile struct {
 	Hostile  bool
 	Size     float32
 }
+
+func DefaultState() State {
+	return State{
+		Player: Player{
+			Alive:    true,
+			Position: rl.Vector2{X: 0, Y: 0},
+			Size:     64,
+		},
+		Enemies:     EnemyList{},
+		Projectiles: ProjectileList{},
+	}
+}

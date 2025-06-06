@@ -12,13 +12,7 @@ func main() {
 
 	rl.SetTargetFPS(1000)
 
-	state := internal.State{
-		Player: internal.Player{
-			Alive:    true,
-			Position: rl.Vector2{X: 0, Y: 0},
-			Size:     64,
-		},
-	}
+	state := internal.DefaultState()
 	for !rl.WindowShouldClose() {
 		state = state.Update()
 		rl.BeginDrawing()
