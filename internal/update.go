@@ -41,6 +41,7 @@ func handleIndependent(state State) State {
 		newProjectiles = updateProjectiles(state.Projectiles)
 	}()
 
+	wg.Wait()
 	return State{newPlayer, newEnemies, newProjectiles}
 }
 
