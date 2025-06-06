@@ -56,14 +56,14 @@ func updatePlayer(player Player) Player {
 	for key, direction := range inputMap {
 		if rl.IsKeyDown(key) {
 			newVelocity = rl.Vector2Add(newVelocity, direction)
-			newVelocity = rl.Vector2ClampValue(newVelocity, 0, 8)
+			newVelocity = rl.Vector2ClampValue(newVelocity, 0, 1)
 		}
 	}
 	return Player{
 		true,
 		rl.Vector2Add(player.Position, player.Velocity),
 		newVelocity,
-		player.Size,
+		player.Radius,
 	}
 }
 
@@ -72,8 +72,8 @@ func updateEnemies(state State) EnemyList {
 	canSpawnEnemy := rand.Float32() < float32(1)/1000
 	for i, e := range state.Enemies {
 		if e.Alive {
-			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 20)
-			newEnemies[i] = Enemy{true, newPos, e.Size}
+			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 0.5)
+			newEnemies[i] = Enemy{true, newPos, e.Radius}
 		} else if canSpawnEnemy {
 			canSpawnEnemy = false
 
@@ -93,7 +93,7 @@ func updateProjectiles(projectiles ProjectileList) ProjectileList {
 				Position: rl.Vector2Add(p.Position, p.Velocity),
 				Velocity: p.Velocity,
 				Hostile:  p.Hostile,
-				Size:     16,
+				Radius:     16,
 			}
 		}
 	}
@@ -106,13 +106,13 @@ func handleInteractions(state *State) {
 
 func updateCollisions(state *State) {
 	for i, e := range state.Enemies {
-		if e.Alive && rl.Vector2Distance(state.Player.Position, e.Position) < e.Size+state.Player.Size {
+		if e.Alive && rl.Vector2Distance(state.Player.Position, e.Position) < e.Radius+state.Player.Radius {
 			state.Player.Alive = false
 			println("Player died from enemy at", e.Position.X, e.Position.Y)
 		}
 
 		for j, p := range state.Projectiles {
-			if p.Alive && !p.Hostile && rl.Vector2Distance(e.Position, p.Position) < e.Size+p.Size {
+			if p.Alive && !p.Hostile && rl.Vector2Distance(e.Position, p.Position) < e.Radius+p.Radius {
 				state.Enemies[i].Alive = false
 				state.Projectiles[j].Alive = false
 			}
@@ -120,7 +120,7 @@ func updateCollisions(state *State) {
 	}
 
 	for j, p := range state.Projectiles {
-		if p.Alive && p.Hostile && rl.Vector2Distance(state.Player.Position, p.Position) < state.Player.Size+p.Size {
+		if p.Alive && p.Hostile && rl.Vector2Distance(state.Player.Position, p.Position) < state.Player.Radius+p.Radius {
 			state.Player.Alive = false
 			state.Projectiles[j].Alive = false
 			println("Player died from projectile at", p.Position.X, p.Position.Y)
