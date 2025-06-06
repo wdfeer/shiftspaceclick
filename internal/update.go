@@ -55,6 +55,7 @@ func updatePlayer(player Player) Player {
 	for key, direction := range inputMap {
 		if rl.IsKeyDown(key) {
 			newVelocity = rl.Vector2Add(newVelocity, direction)
+			newVelocity = rl.Vector2ClampValue(newVelocity, 0, 8)
 		}
 	}
 	return Player{
