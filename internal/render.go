@@ -27,6 +27,8 @@ func (state State) Render() {
 	}
 
 	rl.EndMode2D()
+
+	state.renderUI()
 }
 
 func (player Player) render() {
@@ -45,4 +47,10 @@ func (projectile Projectile) render() {
 		color = rl.White
 	}
 	rl.DrawCircleV(projectile.Position, projectile.Size/2, color)
+}
+
+func (state State) renderUI() {
+	if !state.Player.Alive {
+		rl.DrawText("You died!", 10, 10, 20, rl.White)
+	}
 }

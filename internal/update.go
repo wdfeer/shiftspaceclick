@@ -10,7 +10,6 @@ import (
 
 func (state State) Update() State {
 	if !state.Player.Alive {
-		println("Player dead!")
 		return state
 	}
 
