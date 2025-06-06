@@ -10,6 +10,7 @@ import (
 
 func (state State) Update() State {
 	if !state.Player.Alive {
+		println("Player dead!")
 		return state
 	}
 
@@ -99,12 +100,12 @@ func handleInteractions(state *State) {
 
 func updateCollisions(state *State) {
 	for i, e := range state.Enemies {
-		if rl.Vector2Distance(state.Player.Position, e.Position) < e.Size+state.Player.Size {
+		if e.Alive && rl.Vector2Distance(state.Player.Position, e.Position) < e.Size+state.Player.Size {
 			state.Player.Alive = false
 		}
 
 		for j, p := range state.Projectiles {
-			if !p.Hostile && rl.Vector2Distance(e.Position, p.Position) < e.Size+p.Size {
+			if p.Alive && !p.Hostile && rl.Vector2Distance(e.Position, p.Position) < e.Size+p.Size {
 				state.Enemies[i].Alive = false
 				state.Projectiles[j].Alive = false
 			}
@@ -112,7 +113,7 @@ func updateCollisions(state *State) {
 	}
 
 	for j, p := range state.Projectiles {
-		if p.Hostile && rl.Vector2Distance(state.Player.Position, p.Position) < state.Player.Size+p.Size {
+		if p.Alive && p.Hostile && rl.Vector2Distance(state.Player.Position, p.Position) < state.Player.Size+p.Size {
 			state.Player.Alive = false
 			state.Projectiles[j].Alive = false
 		}
