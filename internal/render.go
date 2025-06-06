@@ -3,17 +3,30 @@ package internal
 import rl "github.com/gen2brain/raylib-go/raylib"
 
 func (state State) Render() {
+	camera := rl.Camera2D{}
+	camera.Target = state.Player.Position
+
 	rl.ClearBackground(rl.Black)
 
-	state.Player.render()
+	rl.BeginMode2D(camera)
+
+	if state.Player.Alive {
+		state.Player.render()
+	}
 
 	for _, e := range state.Enemies {
-		e.render()
+		if e.Alive {
+			e.render()
+		}
 	}
 
 	for _, p := range state.Projectiles {
-		p.render()
+		if p.Alive {
+			p.render()
+		}
 	}
+
+	rl.EndMode2D()
 }
 
 func (player Player) render() {
