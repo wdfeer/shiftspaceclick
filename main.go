@@ -1,19 +1,22 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"vektorrush/internal"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 func main() {
-	rl.InitWindow(800, 450, "raylib [core] example - basic window")
+	rl.InitWindow(1600, 900, "vektorrush")
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(1000)
 
+	state := internal.State{}
 	for !rl.WindowShouldClose() {
+		state = state.Update()
 		rl.BeginDrawing()
-
-		rl.ClearBackground(rl.RayWhite)
-		rl.DrawText("Congrats! You created your first window!", 190, 200, 20, rl.LightGray)
-
+		state.Render()
 		rl.EndDrawing()
 	}
 }
