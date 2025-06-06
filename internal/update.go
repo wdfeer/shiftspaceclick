@@ -46,7 +46,12 @@ func handleIndependent(state State) State {
 }
 
 func updatePlayer(player Player) Player {
-	inputMap := map[int32]rl.Vector2{rl.KeyW: {X: 1, Y: 0}}
+	inputMap := map[int32]rl.Vector2{
+		rl.KeyW: {X: 0, Y: -1},
+		rl.KeyA: {X: -1, Y: 0},
+		rl.KeyS: {X: 0, Y: 1},
+		rl.KeyD: {X: 1, Y: 0},
+	}
 	newVelocity := player.Velocity
 	for key, direction := range inputMap {
 		if rl.IsKeyDown(key) {
