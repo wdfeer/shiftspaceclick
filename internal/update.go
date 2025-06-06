@@ -53,15 +53,16 @@ func updatePlayer(player Player) Player {
 		rl.KeyD: {X: 1, Y: 0},
 	}
 	newVelocity := player.Velocity
+	newVelocity = rl.Vector2ClampValue(newVelocity, 0, max(rl.Vector2Length(newVelocity)-4000*rl.GetFrameTime(), 0))
 	for key, direction := range inputMap {
 		if rl.IsKeyDown(key) {
-			newVelocity = rl.Vector2Add(newVelocity, direction)
-			newVelocity = rl.Vector2ClampValue(newVelocity, 0, 1)
+			newVelocity = rl.Vector2Add(newVelocity, rl.Vector2Scale(direction, 8000*rl.GetFrameTime()))
 		}
 	}
+	newVelocity = rl.Vector2ClampValue(newVelocity, 0, 800)
 	return Player{
 		true,
-		rl.Vector2Add(player.Position, player.Velocity),
+		rl.Vector2Add(player.Position, rl.Vector2Scale(player.Velocity, rl.GetFrameTime())),
 		newVelocity,
 		player.Radius,
 	}
@@ -72,7 +73,7 @@ func updateEnemies(state State) EnemyList {
 	canSpawnEnemy := rand.Float32() < float32(1)/1000
 	for i, e := range state.Enemies {
 		if e.Alive {
-			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 0.5)
+			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 600*rl.GetFrameTime())
 			newEnemies[i] = Enemy{true, newPos, e.Radius}
 		} else if canSpawnEnemy {
 			canSpawnEnemy = false
@@ -90,10 +91,10 @@ func updateProjectiles(projectiles ProjectileList) ProjectileList {
 		if p.Alive {
 			newProjectiles[i] = Projectile{
 				Alive:    true,
-				Position: rl.Vector2Add(p.Position, p.Velocity),
+				Position: rl.Vector2Add(p.Position, rl.Vector2Scale(p.Velocity, rl.GetFrameTime())),
 				Velocity: p.Velocity,
 				Hostile:  p.Hostile,
-				Radius:     16,
+				Radius:   16,
 			}
 		}
 	}
