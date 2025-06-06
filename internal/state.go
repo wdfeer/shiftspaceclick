@@ -17,9 +17,10 @@ type Player struct {
 
 type EnemyList = [99]Enemy
 type Enemy struct {
-	Alive    bool
-	Position rl.Vector2
-	Radius   float32
+	Alive       bool
+	Position    rl.Vector2
+	Radius      float32
+	Personality float32
 }
 
 type ProjectileList = [999]Projectile

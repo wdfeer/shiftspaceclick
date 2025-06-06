@@ -73,13 +73,14 @@ func updateEnemies(state State) EnemyList {
 	canSpawnEnemy := rand.Float32() < float32(1)/1000
 	for i, e := range state.Enemies {
 		if e.Alive {
-			newPos := rl.Vector2MoveTowards(e.Position, state.Player.Position, 600*rl.GetFrameTime())
-			newEnemies[i] = Enemy{true, newPos, e.Radius}
+			target := rl.Vector2Add(state.Player.Position, rl.Vector2Scale(state.Player.Velocity, e.Personality*3))
+			newPos := rl.Vector2MoveTowards(e.Position, target, 600*rl.GetFrameTime())
+			newEnemies[i] = Enemy{true, newPos, e.Radius, e.Personality}
 		} else if canSpawnEnemy {
 			canSpawnEnemy = false
 
 			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1000, Y: 0}, rand.Float32()*math.Pi))
-			newEnemies[i] = Enemy{true, pos, 64}
+			newEnemies[i] = Enemy{true, pos, 64, rand.Float32()}
 		}
 	}
 	return newEnemies
