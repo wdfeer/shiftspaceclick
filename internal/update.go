@@ -71,7 +71,7 @@ func updateEnemies(state State) EnemyList {
 			canSpawnEnemy = false
 
 			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1000, Y: 0}, rand.Float32()*math.Pi))
-			newEnemies[i] = Enemy{true, pos, e.Size}
+			newEnemies[i] = Enemy{true, pos, 64}
 		}
 	}
 	return newEnemies
@@ -86,6 +86,7 @@ func updateProjectiles(projectiles ProjectileList) ProjectileList {
 				Position: rl.Vector2Add(p.Position, p.Velocity),
 				Velocity: p.Velocity,
 				Hostile:  p.Hostile,
+				Size:     16,
 			}
 		}
 	}

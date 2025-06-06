@@ -14,7 +14,9 @@ func main() {
 
 	state := internal.State{
 		Player: internal.Player{
-			Alive: true,
+			Alive:    true,
+			Position: rl.Vector2{X: 0, Y: 0},
+			Size:     64,
 		},
 	}
 	for !rl.WindowShouldClose() {
