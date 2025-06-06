@@ -106,6 +106,7 @@ func updateCollisions(state *State) {
 	for i, e := range state.Enemies {
 		if e.Alive && rl.Vector2Distance(state.Player.Position, e.Position) < e.Size+state.Player.Size {
 			state.Player.Alive = false
+			println("Player died from enemy at", e.Position.X, e.Position.Y)
 		}
 
 		for j, p := range state.Projectiles {
@@ -120,6 +121,7 @@ func updateCollisions(state *State) {
 		if p.Alive && p.Hostile && rl.Vector2Distance(state.Player.Position, p.Position) < state.Player.Size+p.Size {
 			state.Player.Alive = false
 			state.Projectiles[j].Alive = false
+			println("Player died from projectile at", p.Position.X, p.Position.Y)
 		}
 	}
 }
