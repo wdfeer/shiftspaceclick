@@ -57,9 +57,14 @@ func updatePlayer(player Player) Player {
 	for key, direction := range inputMap {
 		if rl.IsKeyDown(key) {
 			newVelocity = rl.Vector2Add(newVelocity, rl.Vector2Scale(direction, 8000*rl.GetFrameTime()))
+			if rl.IsKeyPressed(rl.KeyLeftShift) {
+				newVelocity = rl.Vector2Add(newVelocity, rl.Vector2Scale(direction, 3000))
+			}
 		}
 	}
-	newVelocity = rl.Vector2ClampValue(newVelocity, 0, 800)
+	if rl.Vector2Length(newVelocity) > 800 {
+		newVelocity = rl.Vector2Scale(newVelocity, max(0.99, 0.992-rl.GetFrameTime()))
+	}
 	return Player{
 		true,
 		rl.Vector2Add(player.Position, rl.Vector2Scale(player.Velocity, rl.GetFrameTime())),
