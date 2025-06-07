@@ -94,9 +94,16 @@ func updatePlayer(player Player) Player {
 	}
 }
 
+func canSpawnEnemy(state State) bool {
+	chance := rl.GetFrameTime()
+	if rl.Vector2Length(state.Player.Position) > 10000 {
+		chance *= 10
+	}
+	return rand.Float32() < chance
+}
 func updateEnemies(state State) EnemyList {
 	newEnemies := EnemyList{}
-	canSpawnEnemy := rand.Float32() < float32(1)/1000
+	canSpawnEnemy := canSpawnEnemy(state)
 	for i, e := range state.Enemies {
 		if e.Alive {
 			target := rl.Vector2Add(state.Player.Position, rl.Vector2Scale(state.Player.Velocity, e.Personality*3))
