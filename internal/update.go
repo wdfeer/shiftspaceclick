@@ -95,9 +95,9 @@ func updatePlayer(player Player) Player {
 }
 
 func canSpawnEnemy(state State) bool {
-	chance := rl.GetFrameTime()
+	chance := rl.GetFrameTime() * 2
 	if rl.Vector2Length(state.Player.Position) > 10000 {
-		chance *= 10
+		chance *= 7
 	}
 	return rand.Float32() < chance
 }
@@ -106,8 +106,8 @@ func updateEnemies(state State) EnemyList {
 	canSpawnEnemy := canSpawnEnemy(state)
 	for i, e := range state.Enemies {
 		if e.Alive {
-			target := rl.Vector2Add(state.Player.Position, rl.Vector2Scale(state.Player.Velocity, e.Personality*3))
-			newPos := rl.Vector2MoveTowards(e.Position, target, 600*rl.GetFrameTime())
+			target := rl.Vector2Add(state.Player.Position, rl.Vector2Scale(state.Player.Velocity, e.Personality*1.5))
+			newPos := rl.Vector2MoveTowards(e.Position, target, 1500*rl.GetFrameTime()*max(e.Personality, 0.7))
 			newEnemies[i] = Enemy{true, newPos, e.Radius, e.Personality}
 		} else if canSpawnEnemy {
 			canSpawnEnemy = false
@@ -139,7 +139,7 @@ func updateProjectiles(state State) ProjectileList {
 			delta := rl.Vector2Subtract(rl.GetMousePosition(), rl.Vector2{X: float32(rl.GetScreenWidth()) / 2, Y: float32(rl.GetScreenHeight()) / 2})
 
 			if state.Player.ZVel > 0 {
-				velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 1600)
+				velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 2400)
 				newProjectiles[i] = Projectile{
 					Alive:    true,
 					Position: state.Player.Position,
@@ -148,7 +148,7 @@ func updateProjectiles(state State) ProjectileList {
 					Radius:   24,
 				}
 			} else {
-				velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 2400)
+				velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 3600)
 				newProjectiles[i] = Projectile{
 					Alive:    true,
 					Position: state.Player.Position,
@@ -210,7 +210,7 @@ func updateCollisions(state *State) {
 				Hostile:  false,
 				Alive:    true,
 				Position: explosionPosition,
-				Velocity: rl.Vector2Rotate(rl.Vector2{X: 1200 + rand.Float32()*500, Y: 0}, rand.Float32()*math.Pi*2),
+				Velocity: rl.Vector2Rotate(rl.Vector2{X: 1800 + rand.Float32()*700, Y: 0}, rand.Float32()*math.Pi*2),
 				Radius:   12,
 			}
 		}
