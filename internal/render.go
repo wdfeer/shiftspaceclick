@@ -61,12 +61,16 @@ func (enemy Enemy) render() {
 
 func (projectile Projectile) render() {
 	var color rl.Color
+	var shadowOffset float32 = 3
 	if projectile.Hostile {
 		color = rl.Red
 	} else {
 		color = rl.White
+		if projectile.Radius == 24 {
+			shadowOffset = 8
+		}
 	}
-	rl.DrawCircleV(rl.Vector2Add(projectile.Position, getShadowOffset(3)), projectile.Radius, rl.ColorTint(rl.Gray, color))
+	rl.DrawCircleV(rl.Vector2Add(projectile.Position, getShadowOffset(shadowOffset)), projectile.Radius, rl.ColorTint(rl.Gray, color))
 	rl.DrawCircleV(projectile.Position, projectile.Radius, color)
 }
 
