@@ -49,9 +49,11 @@ func getShadowOffset(distance float32) rl.Vector2 {
 }
 
 func (player Player) render() {
-	for i, p := range player.Afterimages {
-		opacity := float32(math.Pow(1-float64(i)/float64(len(player.Afterimages)), 3))
-		rl.DrawCircleV(p, player.Radius, rl.ColorAlpha(rl.RayWhite, opacity))
+	for i, p := range player.Afterimage {
+		if p != rl.Vector2Zero() {
+			opacity := float32(math.Pow(1-float64(i)/float64(len(player.Afterimage)), 3))
+			rl.DrawCircleV(p, player.Radius, rl.ColorAlpha(rl.RayWhite, opacity))
+		}
 	}
 
 	shadowOffset := getShadowOffset(max(1, player.ZPos*50))
@@ -60,6 +62,13 @@ func (player Player) render() {
 }
 
 func (enemy Enemy) render() {
+	for i, p := range enemy.Afterimage {
+		if p != rl.Vector2Zero() {
+			opacity := float32(math.Pow(1-float64(i)/float64(len(enemy.Afterimage)), 3))
+			rl.DrawCircleV(p, enemy.Radius, rl.ColorAlpha(rl.Maroon, opacity))
+		}
+	}
+
 	rl.DrawCircleV(rl.Vector2Add(enemy.Position, getShadowOffset(5)), enemy.Radius, rl.ColorTint(rl.Gray, rl.Maroon))
 	rl.DrawCircleV(enemy.Position, enemy.Radius, rl.Maroon)
 }
@@ -75,6 +84,14 @@ func (projectile Projectile) render() {
 			shadowOffset = 8
 		}
 	}
+
+	for i, p := range projectile.Afterimage {
+		if p != rl.Vector2Zero() {
+			opacity := float32(math.Pow(1-float64(i)/float64(len(projectile.Afterimage)), 3))
+			rl.DrawCircleV(p, projectile.Radius, rl.ColorAlpha(color, opacity))
+		}
+	}
+
 	rl.DrawCircleV(rl.Vector2Add(projectile.Position, getShadowOffset(shadowOffset)), projectile.Radius, rl.ColorTint(rl.Gray, color))
 	rl.DrawCircleV(projectile.Position, projectile.Radius, color)
 }

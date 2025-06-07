@@ -10,13 +10,13 @@ type State struct {
 
 type Afterimage = [20]rl.Vector2
 type Player struct {
-	Alive       bool
-	Position    rl.Vector2
-	Velocity    rl.Vector2
-	Radius      float32
-	ZPos        float32
-	ZVel        float32
-	Afterimages Afterimage
+	Alive      bool
+	Position   rl.Vector2
+	Velocity   rl.Vector2
+	Radius     float32
+	ZPos       float32
+	ZVel       float32
+	Afterimage Afterimage
 }
 
 type EnemyList = [500]Enemy
@@ -25,15 +25,17 @@ type Enemy struct {
 	Position    rl.Vector2
 	Radius      float32
 	Personality float32
+	Afterimage  Afterimage
 }
 
 type ProjectileList = [2000]Projectile
 type Projectile struct {
-	Alive    bool
-	Position rl.Vector2
-	Velocity rl.Vector2
-	Hostile  bool
-	Radius   float32
+	Alive      bool
+	Position   rl.Vector2
+	Velocity   rl.Vector2
+	Hostile    bool
+	Radius     float32
+	Afterimage Afterimage
 }
 
 func DefaultState() State {

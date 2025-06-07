@@ -48,6 +48,16 @@ func handleIndependent(state State) State {
 	return State{newPlayer, newEnemies, newProjectiles}
 }
 
+func updateAfterimage(afterimages Afterimage, current rl.Vector2) Afterimage {
+	newAfterimages := Afterimage{}
+	newAfterimages[0] = current
+	for i, p := range afterimages {
+		if i+1 < len(newAfterimages) {
+			newAfterimages[i+1] = p
+		}
+	}
+	return newAfterimages
+}
 func updatePlayer(player Player) Player {
 	inputMap := map[int32]rl.Vector2{
 		rl.KeyW: {X: 0, Y: -1},
@@ -87,14 +97,6 @@ func updatePlayer(player Player) Player {
 
 	newZPos := max(0, player.ZPos+newZVel*rl.GetFrameTime())
 
-	newAfterimages := Afterimage{}
-	newAfterimages[0] = player.Position
-	for i, p := range player.Afterimages {
-		if i+1 < len(newAfterimages) {
-			newAfterimages[i+1] = p
-		}
-	}
-
 	return Player{
 		true,
 		rl.Vector2Add(player.Position, rl.Vector2Scale(player.Velocity, rl.GetFrameTime())),
@@ -102,7 +104,7 @@ func updatePlayer(player Player) Player {
 		player.Radius,
 		newZPos,
 		newZVel,
-		newAfterimages,
+		updateAfterimage(player.Afterimage, player.Position),
 	}
 }
 
@@ -120,12 +122,12 @@ func updateEnemies(state State) EnemyList {
 		if e.Alive {
 			target := rl.Vector2Add(state.Player.Position, rl.Vector2Scale(state.Player.Velocity, e.Personality*1.5))
 			newPos := rl.Vector2MoveTowards(e.Position, target, 1500*rl.GetFrameTime()*max(e.Personality, 0.7))
-			newEnemies[i] = Enemy{true, newPos, e.Radius, e.Personality}
+			newEnemies[i] = Enemy{true, newPos, e.Radius, e.Personality, updateAfterimage(e.Afterimage, e.Position)}
 		} else if canSpawnEnemy {
 			canSpawnEnemy = false
 
 			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1700, Y: 0}, rand.Float32()*math.Pi*2))
-			newEnemies[i] = Enemy{true, pos, 64, rand.Float32()}
+			newEnemies[i] = Enemy{true, pos, 64, rand.Float32(), Afterimage{}}
 		}
 	}
 	return newEnemies
@@ -138,11 +140,12 @@ func updateProjectiles(state State) ProjectileList {
 		if p.Alive {
 			if rl.Vector2Length(p.Velocity) > 100 {
 				newProjectiles[i] = Projectile{
-					Alive:    true,
-					Position: rl.Vector2Add(p.Position, rl.Vector2Scale(p.Velocity, rl.GetFrameTime())),
-					Velocity: rl.Vector2ClampValue(p.Velocity, 0, rl.Vector2Length(p.Velocity)-1000*rl.GetFrameTime()),
-					Hostile:  p.Hostile,
-					Radius:   p.Radius,
+					Alive:      true,
+					Position:   rl.Vector2Add(p.Position, rl.Vector2Scale(p.Velocity, rl.GetFrameTime())),
+					Velocity:   rl.Vector2ClampValue(p.Velocity, 0, rl.Vector2Length(p.Velocity)-1000*rl.GetFrameTime()),
+					Hostile:    p.Hostile,
+					Radius:     p.Radius,
+					Afterimage: updateAfterimage(p.Afterimage, p.Position),
 				}
 			}
 		} else if playerShooting {
