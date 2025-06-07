@@ -167,6 +167,9 @@ func handleInteractions(state *State) {
 }
 
 func updateCollisions(state *State) {
+	pelletCount := 0
+	var explosionPosition rl.Vector2
+
 	for i, e := range state.Enemies {
 		if !e.Alive {
 			continue
@@ -181,6 +184,10 @@ func updateCollisions(state *State) {
 			if p.Alive && !p.Hostile && rl.Vector2Distance(e.Position, p.Position) < e.Radius+p.Radius {
 				state.Enemies[i].Alive = false
 				state.Projectiles[j].Alive = false
+				if p.Radius == 24 { // TODO: make a ProjectileType enum
+					pelletCount = 32
+					explosionPosition = p.Position
+				}
 			}
 		}
 	}
@@ -190,6 +197,17 @@ func updateCollisions(state *State) {
 			state.Player.Alive = false
 			state.Projectiles[j].Alive = false
 			println("Player died from projectile at", p.Position.X, p.Position.Y)
+		}
+
+		if !p.Alive && pelletCount > 0 {
+			pelletCount--
+			state.Projectiles[j] = Projectile{
+				Hostile:  false,
+				Alive:    true,
+				Position: explosionPosition,
+				Velocity: rl.Vector2Rotate(rl.Vector2{X: 1000 + rand.Float32()*500, Y: 0}, rand.Float32()*math.Pi*2),
+				Radius:   12,
+			}
 		}
 	}
 }
