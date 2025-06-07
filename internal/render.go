@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -66,6 +68,8 @@ func (projectile Projectile) render() {
 
 func (state State) renderUI() {
 	if !state.Player.Alive {
-		rl.DrawText("You died!", 10, 10, 20, rl.White)
+		rl.DrawText("You died!", 10, 10, 50, rl.White)
+	} else {
+		rl.DrawText(fmt.Sprintf("Speed: %d", int32(rl.Vector2Length(state.Player.Velocity))), 10, 10, 40, rl.White)
 	}
 }
