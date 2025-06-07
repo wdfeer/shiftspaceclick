@@ -9,15 +9,16 @@ type State struct {
 }
 
 type Player struct {
-	Alive    bool
-	Position rl.Vector2
-	Velocity rl.Vector2
-	Radius   float32
-	ZPos     float32
-	ZVel     float32
+	Alive       bool
+	Position    rl.Vector2
+	Velocity    rl.Vector2
+	Radius      float32
+	ZPos        float32
+	ZVel        float32
+	Afterimages [20]rl.Vector2
 }
 
-type EnemyList = [499]Enemy
+type EnemyList = [500]Enemy
 type Enemy struct {
 	Alive       bool
 	Position    rl.Vector2
@@ -25,7 +26,7 @@ type Enemy struct {
 	Personality float32
 }
 
-type ProjectileList = [1999]Projectile
+type ProjectileList = [2000]Projectile
 type Projectile struct {
 	Alive    bool
 	Position rl.Vector2

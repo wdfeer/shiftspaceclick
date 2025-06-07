@@ -87,6 +87,14 @@ func updatePlayer(player Player) Player {
 
 	newZPos := max(0, player.ZPos+newZVel*rl.GetFrameTime())
 
+	newAfterimages := [20]rl.Vector2{}
+	newAfterimages[0] = player.Position
+	for i, p := range player.Afterimages {
+		if i+1 < len(newAfterimages) {
+			newAfterimages[i+1] = p
+		}
+	}
+
 	return Player{
 		true,
 		rl.Vector2Add(player.Position, rl.Vector2Scale(player.Velocity, rl.GetFrameTime())),
@@ -94,6 +102,7 @@ func updatePlayer(player Player) Player {
 		player.Radius,
 		newZPos,
 		newZVel,
+		newAfterimages,
 	}
 }
 

@@ -49,6 +49,11 @@ func getShadowOffset(distance float32) rl.Vector2 {
 }
 
 func (player Player) render() {
+	for i, p := range player.Afterimages {
+		opacity := (1 - float32(i)/20) * min(rl.Vector2Length(player.Velocity), 0.2)
+		rl.DrawCircleV(p, player.Radius, rl.ColorAlpha(rl.RayWhite, opacity))
+	}
+
 	shadowOffset := getShadowOffset(max(1, player.ZPos*50))
 	rl.DrawCircleV(rl.Vector2Add(player.Position, shadowOffset), player.Radius, rl.ColorTint(rl.Gray, rl.RayWhite))
 	rl.DrawCircleV(player.Position, player.Radius, rl.RayWhite)
