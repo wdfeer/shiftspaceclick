@@ -124,18 +124,20 @@ func updateProjectiles(state State) ProjectileList {
 	playerShooting := rl.IsMouseButtonPressed(rl.MouseButtonLeft)
 	for i, p := range state.Projectiles {
 		if p.Alive {
-			newProjectiles[i] = Projectile{
-				Alive:    true,
-				Position: rl.Vector2Add(p.Position, rl.Vector2Scale(p.Velocity, rl.GetFrameTime())),
-				Velocity: p.Velocity,
-				Hostile:  p.Hostile,
-				Radius:   p.Radius,
+			if rl.Vector2Length(p.Velocity) > 100 {
+				newProjectiles[i] = Projectile{
+					Alive:    true,
+					Position: rl.Vector2Add(p.Position, rl.Vector2Scale(p.Velocity, rl.GetFrameTime())),
+					Velocity: rl.Vector2ClampValue(p.Velocity, 0, rl.Vector2Length(p.Velocity)-1000*rl.GetFrameTime()),
+					Hostile:  p.Hostile,
+					Radius:   p.Radius,
+				}
 			}
 		} else if playerShooting {
 			playerShooting = false
 
 			delta := rl.Vector2Subtract(rl.GetMousePosition(), rl.Vector2{X: 800, Y: 450})
-			velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 1200)
+			velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 2400)
 			newProjectiles[i] = Projectile{
 				Alive:    true,
 				Position: state.Player.Position,
