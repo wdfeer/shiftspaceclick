@@ -87,7 +87,7 @@ func updatePlayer(player Player) Player {
 
 	newZPos := max(0, player.ZPos+newZVel*rl.GetFrameTime())
 
-	newAfterimages := [20]rl.Vector2{}
+	newAfterimages := Afterimage{}
 	newAfterimages[0] = player.Position
 	for i, p := range player.Afterimages {
 		if i+1 < len(newAfterimages) {

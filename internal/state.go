@@ -8,6 +8,7 @@ type State struct {
 	Projectiles ProjectileList
 }
 
+type Afterimage = [20]rl.Vector2
 type Player struct {
 	Alive       bool
 	Position    rl.Vector2
@@ -15,7 +16,7 @@ type Player struct {
 	Radius      float32
 	ZPos        float32
 	ZVel        float32
-	Afterimages [20]rl.Vector2
+	Afterimages Afterimage
 }
 
 type EnemyList = [500]Enemy
