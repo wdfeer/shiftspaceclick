@@ -40,10 +40,12 @@ func (state State) Render() {
 }
 
 func (player Player) render() {
+	rl.DrawCircleV(rl.Vector2Add(player.Position, rl.Vector2{X: 3, Y: 3}), player.Radius, rl.ColorTint(rl.Gray, rl.RayWhite))
 	rl.DrawCircleV(player.Position, player.Radius, rl.RayWhite)
 }
 
 func (enemy Enemy) render() {
+	rl.DrawCircleV(rl.Vector2Add(enemy.Position, rl.Vector2{X: 3, Y: 3}), enemy.Radius, rl.ColorTint(rl.Gray, rl.Maroon))
 	rl.DrawCircleV(enemy.Position, enemy.Radius, rl.Maroon)
 }
 
@@ -54,6 +56,7 @@ func (projectile Projectile) render() {
 	} else {
 		color = rl.White
 	}
+	rl.DrawCircleV(rl.Vector2Add(projectile.Position, rl.Vector2{X: 2, Y: 2}), projectile.Radius, rl.ColorTint(rl.Gray, color))
 	rl.DrawCircleV(projectile.Position, projectile.Radius, color)
 }
 
