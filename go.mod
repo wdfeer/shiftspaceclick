@@ -1,4 +1,4 @@
-module vektorrush
+module shiftspaceclick
 
 go 1.24.3
 

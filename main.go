@@ -1,13 +1,13 @@
 package main
 
 import (
-	"vektorrush/internal"
+	"shiftspaceclick/internal"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func main() {
-	rl.InitWindow(1600, 900, "vektorrush")
+	rl.InitWindow(1600, 900, "shiftspaceclick")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(500)
