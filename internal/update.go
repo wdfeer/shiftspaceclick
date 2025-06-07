@@ -112,7 +112,7 @@ func updateEnemies(state State) EnemyList {
 		} else if canSpawnEnemy {
 			canSpawnEnemy = false
 
-			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1000, Y: 0}, rand.Float32()*math.Pi))
+			pos := rl.Vector2Add(state.Player.Position, rl.Vector2Rotate(rl.Vector2{X: 1700, Y: 0}, rand.Float32()*math.Pi))
 			newEnemies[i] = Enemy{true, pos, 64, rand.Float32()}
 		}
 	}
