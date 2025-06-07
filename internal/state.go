@@ -17,7 +17,7 @@ type Player struct {
 	ZVel     float32
 }
 
-type EnemyList = [99]Enemy
+type EnemyList = [499]Enemy
 type Enemy struct {
 	Alive       bool
 	Position    rl.Vector2
@@ -25,7 +25,7 @@ type Enemy struct {
 	Personality float32
 }
 
-type ProjectileList = [999]Projectile
+type ProjectileList = [1999]Projectile
 type Projectile struct {
 	Alive    bool
 	Position rl.Vector2
