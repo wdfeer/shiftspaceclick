@@ -86,7 +86,7 @@ func updatePlayer(player Player) Player {
 
 	var newZVel float32
 	if player.ZPos == 0 {
-		if rl.IsKeyPressed(rl.KeySpace) {
+		if rl.IsKeyDown(rl.KeySpace) {
 			newZVel = 2
 		} else {
 			newZVel = 0
