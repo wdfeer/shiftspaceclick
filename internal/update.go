@@ -200,7 +200,7 @@ func updateCollisions(state *State) {
 				state.Enemies[i].Alive = false
 				state.Projectiles[j].Alive = false
 				if p.Radius == 24 { // TODO: make a ProjectileType enum
-					pelletCount = 128
+					pelletCount = 80
 					explosionPosition = p.Position
 				}
 			}

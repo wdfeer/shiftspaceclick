@@ -19,7 +19,7 @@ type Player struct {
 	Afterimage Afterimage
 }
 
-type EnemyList = [500]Enemy
+type EnemyList = [200]Enemy
 type Enemy struct {
 	Alive       bool
 	Position    rl.Vector2
@@ -28,7 +28,7 @@ type Enemy struct {
 	Afterimage  Afterimage
 }
 
-type ProjectileList = [2000]Projectile
+type ProjectileList = [800]Projectile
 type Projectile struct {
 	Alive      bool
 	Position   rl.Vector2
