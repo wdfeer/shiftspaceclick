@@ -12,6 +12,8 @@ func main() {
 
 	rl.SetTargetFPS(1000)
 
+	rl.SetWindowState(rl.FlagWindowResizable + rl.FlagBorderlessWindowedMode)
+
 	state := internal.DefaultState()
 	for !rl.WindowShouldClose() {
 		state = state.Update()

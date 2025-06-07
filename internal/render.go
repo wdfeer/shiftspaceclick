@@ -10,7 +10,7 @@ import (
 func (state State) Render() {
 	camera := rl.Camera2D{}
 	camera.Target = state.Player.Position
-	camera.Offset = rl.Vector2{X: 800, Y: 450}
+	camera.Offset = rl.Vector2{X: float32(rl.GetScreenWidth()) / 2, Y: float32(rl.GetScreenHeight()) / 2}
 	camera.Zoom = 0.5
 
 	rl.ClearBackground(rl.Black)

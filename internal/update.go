@@ -136,7 +136,7 @@ func updateProjectiles(state State) ProjectileList {
 		} else if playerShooting {
 			playerShooting = false
 
-			delta := rl.Vector2Subtract(rl.GetMousePosition(), rl.Vector2{X: 800, Y: 450})
+			delta := rl.Vector2Subtract(rl.GetMousePosition(), rl.Vector2{X: float32(rl.GetScreenWidth()) / 2, Y: float32(rl.GetScreenHeight()) / 2})
 			velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 2400)
 			newProjectiles[i] = Projectile{
 				Alive:    true,
