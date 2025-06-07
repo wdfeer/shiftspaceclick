@@ -83,6 +83,7 @@ func (state State) renderUI() {
 			rl.DrawText("Dash: LSHIFT", 760, 650, 40, rl.Yellow)
 			rl.DrawText("Jump: SPACE", 860, 700, 40, rl.Yellow)
 			rl.DrawText("Shoot: LCLICK", 960, 750, 40, rl.Yellow)
+			rl.DrawText("Rocket: Jump + Shoot", 1060, 800, 40, rl.Yellow)
 		}
 		rl.DrawText(fmt.Sprintf("Speed: %d", int32(rl.Vector2Length(state.Player.Velocity))), 10, 10, 40, rl.White)
 	}
