@@ -10,7 +10,7 @@ func main() {
 	rl.InitWindow(1600, 900, "vektorrush")
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(1000)
+	rl.SetTargetFPS(500)
 
 	rl.SetWindowState(rl.FlagWindowResizable + rl.FlagBorderlessWindowedMode)
 
