@@ -38,7 +38,7 @@ func handleIndependent(state State) State {
 	}()
 	go func() {
 		defer wg.Done()
-		newProjectiles = updateProjectiles(state.Projectiles)
+		newProjectiles = updateProjectiles(state)
 	}()
 
 	wg.Wait()
@@ -112,15 +112,28 @@ func updateEnemies(state State) EnemyList {
 	return newEnemies
 }
 
-func updateProjectiles(projectiles ProjectileList) ProjectileList {
+func updateProjectiles(state State) ProjectileList {
 	newProjectiles := ProjectileList{}
-	for i, p := range projectiles {
+	playerShooting := rl.IsMouseButtonPressed(rl.MouseButtonLeft)
+	for i, p := range state.Projectiles {
 		if p.Alive {
 			newProjectiles[i] = Projectile{
 				Alive:    true,
 				Position: rl.Vector2Add(p.Position, rl.Vector2Scale(p.Velocity, rl.GetFrameTime())),
 				Velocity: p.Velocity,
 				Hostile:  p.Hostile,
+				Radius:   p.Radius,
+			}
+		} else if playerShooting {
+			playerShooting = false
+
+			delta := rl.Vector2Subtract(rl.GetMousePosition(), rl.Vector2{X: 800, Y: 450})
+			velocity := rl.Vector2Scale(rl.Vector2Normalize(delta), 1200)
+			newProjectiles[i] = Projectile{
+				Alive:    true,
+				Position: state.Player.Position,
+				Velocity: velocity,
+				Hostile:  false,
 				Radius:   16,
 			}
 		}

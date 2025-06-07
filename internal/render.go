@@ -75,9 +75,10 @@ func (state State) renderUI() {
 		rl.DrawText("You died!", 10, 10, 50, rl.White)
 	} else {
 		if state.Player.Position.Y == 0 && state.Player.Position.X == 0 {
-			rl.DrawText("Movement: WASD", 660, 600, 40, rl.White)
-			rl.DrawText("Dash: SHIFT", 760, 650, 40, rl.White)
-			rl.DrawText("Jump: SPACE", 860, 700, 40, rl.White)
+			rl.DrawText("Movement: WASD", 660, 600, 40, rl.Yellow)
+			rl.DrawText("Dash: LSHIFT", 760, 650, 40, rl.Yellow)
+			rl.DrawText("Jump: SPACE", 860, 700, 40, rl.Yellow)
+			rl.DrawText("Shoot: LCLICK", 960, 750, 40, rl.Yellow)
 		}
 		rl.DrawText(fmt.Sprintf("Speed: %d", int32(rl.Vector2Length(state.Player.Velocity))), 10, 10, 40, rl.White)
 	}
