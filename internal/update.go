@@ -154,7 +154,11 @@ func handleInteractions(state *State) {
 
 func updateCollisions(state *State) {
 	for i, e := range state.Enemies {
-		if e.Alive && rl.Vector2Distance(state.Player.Position, e.Position) < e.Radius+state.Player.Radius {
+		if !e.Alive {
+			continue
+		}
+
+		if rl.Vector2Distance(state.Player.Position, e.Position) < e.Radius+state.Player.Radius {
 			state.Player.Alive = false
 			println("Player died from enemy at", e.Position.X, e.Position.Y)
 		}
