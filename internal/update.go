@@ -10,6 +10,9 @@ import (
 
 func (state State) Update() State {
 	if !state.Player.Alive {
+		state.Player = DefaultState().Player
+		state.Player.Position = rl.Vector2Scale(rl.Vector2{X: rand.Float32() - 0.5, Y: rand.Float32() - 0.5}, 8000)
+		state.Enemies = EnemyList{}
 		return state
 	}
 
