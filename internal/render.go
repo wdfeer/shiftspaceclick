@@ -12,6 +12,12 @@ func (state State) Render() {
 
 	rl.BeginMode2D(camera)
 
+	for i := -25; i <= 25; i++ {
+		spacing := 1000 * int32(i)
+		rl.DrawLine(-9999, spacing, 9999, spacing, rl.RayWhite)
+		rl.DrawLine(spacing, -9999, spacing, 9999, rl.RayWhite)
+	}
+
 	if state.Player.Alive {
 		state.Player.render()
 	}
