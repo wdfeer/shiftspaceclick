@@ -53,7 +53,11 @@ func updatePlayer(player Player) Player {
 		rl.KeyD: {X: 1, Y: 0},
 	}
 	newVelocity := player.Velocity
-	newVelocity = rl.Vector2ClampValue(newVelocity, 0, max(rl.Vector2Length(newVelocity)-4000*rl.GetFrameTime(), 0))
+	acceleration := float32(4000)
+	if player.ZPos != 0 {
+		acceleration /= 4
+	}
+	newVelocity = rl.Vector2ClampValue(newVelocity, 0, max(rl.Vector2Length(newVelocity)-acceleration*rl.GetFrameTime(), 0))
 	for key, direction := range inputMap {
 		if rl.IsKeyDown(key) {
 			newVelocity = rl.Vector2Add(newVelocity, rl.Vector2Scale(direction, 8000*rl.GetFrameTime()))
@@ -62,23 +66,30 @@ func updatePlayer(player Player) Player {
 			}
 		}
 	}
-	if rl.Vector2Length(newVelocity) > 800 {
+	if rl.Vector2Length(newVelocity) > 800 && player.ZPos == 0 {
 		newVelocity = rl.Vector2Scale(newVelocity, max(0.99, 0.992-rl.GetFrameTime()))
 	}
 
-	newJumpTime := player.JumpTimeLeft
-	if rl.IsKeyPressed(rl.KeySpace) && newJumpTime == 0 {
-		newJumpTime = 0.8
-	} else if newJumpTime != 0 {
-		newJumpTime = max(0, newJumpTime-rl.GetFrameTime())
+	var newZVel float32
+	if player.ZPos == 0 {
+		if rl.IsKeyPressed(rl.KeySpace) {
+			newZVel = 2
+		} else {
+			newZVel = 0
+		}
+	} else {
+		newZVel = player.ZVel - 10*rl.GetFrameTime()
 	}
+
+	newZPos := max(0, player.ZPos+newZVel*rl.GetFrameTime())
 
 	return Player{
 		true,
 		rl.Vector2Add(player.Position, rl.Vector2Scale(player.Velocity, rl.GetFrameTime())),
 		newVelocity,
 		player.Radius,
-		newJumpTime,
+		newZPos,
+		newZVel,
 	}
 }
 

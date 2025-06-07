@@ -43,6 +43,7 @@ func (state State) Render() {
 
 func (player Player) render() {
 	shadowOffset := rl.Vector2{X: 3, Y: 3}
+	shadowOffset = rl.Vector2Scale(shadowOffset, max(1, player.ZPos*30))
 	rl.DrawCircleV(rl.Vector2Add(player.Position, shadowOffset), player.Radius, rl.ColorTint(rl.Gray, rl.RayWhite))
 	rl.DrawCircleV(player.Position, player.Radius, rl.RayWhite)
 }
