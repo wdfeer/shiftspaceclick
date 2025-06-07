@@ -9,10 +9,11 @@ type State struct {
 }
 
 type Player struct {
-	Alive    bool
-	Position rl.Vector2
-	Velocity rl.Vector2
-	Radius   float32
+	Alive        bool
+	Position     rl.Vector2
+	Velocity     rl.Vector2
+	Radius       float32
+	JumpTimeLeft float32
 }
 
 type EnemyList = [99]Enemy

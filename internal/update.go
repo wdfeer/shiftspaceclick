@@ -65,11 +65,20 @@ func updatePlayer(player Player) Player {
 	if rl.Vector2Length(newVelocity) > 800 {
 		newVelocity = rl.Vector2Scale(newVelocity, max(0.99, 0.992-rl.GetFrameTime()))
 	}
+
+	newJumpTime := player.JumpTimeLeft
+	if rl.IsKeyPressed(rl.KeySpace) && newJumpTime == 0 {
+		newJumpTime = 0.8
+	} else if newJumpTime != 0 {
+		newJumpTime = max(0, newJumpTime-rl.GetFrameTime())
+	}
+
 	return Player{
 		true,
 		rl.Vector2Add(player.Position, rl.Vector2Scale(player.Velocity, rl.GetFrameTime())),
 		newVelocity,
 		player.Radius,
+		newJumpTime,
 	}
 }
 

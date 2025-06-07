@@ -1,6 +1,8 @@
 package internal
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 func (state State) Render() {
 	camera := rl.Camera2D{}
@@ -40,7 +42,8 @@ func (state State) Render() {
 }
 
 func (player Player) render() {
-	rl.DrawCircleV(rl.Vector2Add(player.Position, rl.Vector2{X: 3, Y: 3}), player.Radius, rl.ColorTint(rl.Gray, rl.RayWhite))
+	shadowOffset := rl.Vector2{X: 3, Y: 3}
+	rl.DrawCircleV(rl.Vector2Add(player.Position, shadowOffset), player.Radius, rl.ColorTint(rl.Gray, rl.RayWhite))
 	rl.DrawCircleV(player.Position, player.Radius, rl.RayWhite)
 }
 
