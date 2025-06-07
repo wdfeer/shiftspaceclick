@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -43,15 +44,18 @@ func (state State) Render() {
 	state.renderUI()
 }
 
+func getShadowOffset(distance float32) rl.Vector2 {
+	return rl.Vector2Scale(rl.Vector2Rotate(rl.Vector2{X: 1, Y: 0}, math.Pi/6), distance)
+}
+
 func (player Player) render() {
-	shadowOffset := rl.Vector2{X: 3, Y: 3}
-	shadowOffset = rl.Vector2Scale(shadowOffset, max(1, player.ZPos*30))
+	shadowOffset := getShadowOffset(max(1, player.ZPos*50))
 	rl.DrawCircleV(rl.Vector2Add(player.Position, shadowOffset), player.Radius, rl.ColorTint(rl.Gray, rl.RayWhite))
 	rl.DrawCircleV(player.Position, player.Radius, rl.RayWhite)
 }
 
 func (enemy Enemy) render() {
-	rl.DrawCircleV(rl.Vector2Add(enemy.Position, rl.Vector2{X: 3, Y: 3}), enemy.Radius, rl.ColorTint(rl.Gray, rl.Maroon))
+	rl.DrawCircleV(rl.Vector2Add(enemy.Position, getShadowOffset(5)), enemy.Radius, rl.ColorTint(rl.Gray, rl.Maroon))
 	rl.DrawCircleV(enemy.Position, enemy.Radius, rl.Maroon)
 }
 
@@ -62,7 +66,7 @@ func (projectile Projectile) render() {
 	} else {
 		color = rl.White
 	}
-	rl.DrawCircleV(rl.Vector2Add(projectile.Position, rl.Vector2{X: 2, Y: 2}), projectile.Radius, rl.ColorTint(rl.Gray, color))
+	rl.DrawCircleV(rl.Vector2Add(projectile.Position, getShadowOffset(3)), projectile.Radius, rl.ColorTint(rl.Gray, color))
 	rl.DrawCircleV(projectile.Position, projectile.Radius, color)
 }
 
@@ -70,6 +74,11 @@ func (state State) renderUI() {
 	if !state.Player.Alive {
 		rl.DrawText("You died!", 10, 10, 50, rl.White)
 	} else {
+		if state.Player.Position.Y == 0 && state.Player.Position.X == 0 {
+			rl.DrawText("Movement: WASD", 660, 600, 40, rl.White)
+			rl.DrawText("Dash: SHIFT", 760, 650, 40, rl.White)
+			rl.DrawText("Jump: SPACE", 860, 700, 40, rl.White)
+		}
 		rl.DrawText(fmt.Sprintf("Speed: %d", int32(rl.Vector2Length(state.Player.Velocity))), 10, 10, 40, rl.White)
 	}
 }
