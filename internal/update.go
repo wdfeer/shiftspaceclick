@@ -215,7 +215,7 @@ func updateCollisions(state *State) {
 				println("Player died from projectile at", p.Position.X, p.Position.Y)
 			} else if p.Radius == 12 {
 				state.Projectiles[j].Alive = false
-				state.Player.Velocity = rl.Vector2Add(state.Player.Velocity, rl.Vector2Scale(p.Velocity, 0.8))
+				state.Player.Velocity = rl.Vector2Add(state.Player.Velocity, rl.Vector2Scale(p.Velocity, 0.5))
 			}
 		}
 
